@@ -37,9 +37,9 @@ The framework will be tested in a multimedia production environment. More on thi
 
 ## Contributors
 
-|[![Diogo Pinto](http://gravatar.com/avatar/74b9389658f685f4f676efa91a74bef3?s=144)](https://twitter.com/diogojapinto)|
-|---|
-|[Diogo Pinto](https://twitter.com/diogojapinto)|
+[![Diogo Pinto](http://gravatar.com/avatar/74b9389658f685f4f676efa91a74bef3?s=144)](https://twitter.com/diogojapinto)
+---
+[Diogo Pinto](https://twitter.com/diogojapinto)
 
 For the time being, this project is developped as part of my M.Sc. thesis.
 You can contact me through [my e-mail](mailto:diogojapinto@gmail.com).
