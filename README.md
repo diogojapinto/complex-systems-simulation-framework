@@ -11,6 +11,8 @@ This project aims to provide a reusable and extensible tool for behavior analysi
  * scale to reasonably-sized complex systems;
  * enable features' extension through additional modules.
 
+An extended description is found in my thesis monograph, available [here](https://drive.google.com/file/d/0B1dcMiva9KZvTFUxX1gzYlhGYXM/view?usp=sharing).
+
 ## Code Example
 
 As the development progresses, here I will showcase a simple use-case of the framework, in the context of Cyber-Physical Systems (Internet of Things).
