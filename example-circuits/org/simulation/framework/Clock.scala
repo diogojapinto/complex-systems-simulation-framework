@@ -55,7 +55,7 @@ class Clock extends Actor {
 
     case Stop =>
       for (sim <- allSimulants)
-        sim != Stop
+        sim ! Stop
       context stop self
 
     case AddSimulant(sim: ActorRef) =>
