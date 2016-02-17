@@ -1,5 +1,7 @@
 package org.simulation
 
+import org.simulation.circuit.{Adders, Circuit}
+
 /**
   * Created by diogo on 27-01-2016.
   */
@@ -8,11 +10,11 @@ object Demo extends App {
   val circuit = new Circuit with Adders // with Multiplexers with FlipFlops with MultiCoreProcessors
   import circuit._
 
-  val ain = new Wire("ain", true)
-  val bin = new Wire("bin", false)
-  val cin = new Wire("cin", true)
-  val sout = new Wire("sout")
-  val cout = new Wire("cout")
+  val ain = wire("ain", true)
+  val bin = wire("bin", false)
+  val cin = wire("cin", true)
+  val sout = wire("sout")
+  val cout = wire("cout")
 
   probe(ain)
   probe(bin)
@@ -22,5 +24,5 @@ object Demo extends App {
 
   fullAdder(ain, bin, cin, sout, cout)
 
-  circuit.start()
+  start()
 }
