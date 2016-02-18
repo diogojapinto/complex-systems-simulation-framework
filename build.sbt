@@ -15,6 +15,10 @@ resolvers ++= Seq(
 
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor" % "2.4.1",
+  "com.typesafe.akka" %% "akka-agent" % "2.4.1",
+  "com.typesafe.akka" %% "akka-remote" % "2.4.1",
+  "com.typesafe.akka" %% "akka-slf4j" % "2.4.1",
+  "com.typesafe.akka" %% "akka-testkit" % "2.4.1",
 
   "com.twitter.finatra" %% "finatra-http" % versions.finatra,
   "com.twitter.finatra" %% "finatra-httpclient" % versions.finatra,
