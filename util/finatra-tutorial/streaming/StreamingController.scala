@@ -9,7 +9,7 @@ class StreamingController extends Controller {
 
   post("/tweets") { tweets: AsyncStream[Tweet] =>
     tweets map { tweet =>
-      println("Created tweet " + tweet)
+      "Created tweet " + tweet
     }
   }
 }
