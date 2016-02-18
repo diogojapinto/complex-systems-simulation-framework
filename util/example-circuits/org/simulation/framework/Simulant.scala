@@ -18,8 +18,6 @@ trait Simulant extends Actor {
   def simStarting(): Unit = {}
 
   override def receive = {
-    case Stop =>
-      context stop self
     case Ping(time) =>
       if (time == 1) simStarting()
       clock ! Pong(time, self)

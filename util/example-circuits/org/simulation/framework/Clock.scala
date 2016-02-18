@@ -1,6 +1,6 @@
 package org.simulation.framework
 
-import akka.actor.{Actor, ActorRef, Props}
+import akka.actor.{PoisonPill, Actor, ActorRef, Props}
 
 /**
   * Created by diogo on 27-01-2016.
@@ -9,12 +9,15 @@ import akka.actor.{Actor, ActorRef, Props}
 object Clock {
 
   case class Ping(time: Int)
+
   case class Pong(time: Int, from: ActorRef)
 
   case class WorkItem(time: Int, msg: Any, target: ActorRef)
+
   case class AfterDelay(delay: Int, msg: Any, target: ActorRef)
 
   case object Start
+
   case object Stop
 
   case class AddSimulant(sim: ActorRef)
@@ -53,11 +56,6 @@ class Clock extends Actor {
       if (busySimulants.isEmpty)
         advance()
 
-    case Stop =>
-      for (sim <- allSimulants)
-        sim ! Stop
-      context stop self
-
     case AddSimulant(sim: ActorRef) =>
       add(sim)
   }
@@ -65,7 +63,13 @@ class Clock extends Actor {
   private def advance(): Unit = {
     if (agenda.isEmpty && currentTime > 0) {
       println("** Agenda empty. Clock exiting at time " + currentTime + ".")
-      self ! Stop
+      //self ! PoisonPill
+
+      import scala.concurrent.ExecutionContext.Implicits.global
+
+      context.system.terminate().foreach { _ =>
+        println("Actor system was shut down")
+      }
       return
     }
 
