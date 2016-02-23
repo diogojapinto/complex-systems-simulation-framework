@@ -1,10 +1,11 @@
+package com.cs_sim.api
+
 /**
   * Created by dpinto on 18/02/2016.
   */
 
-import com.twitter.finatra.http.test.{EmbeddedHttpServer, HttpTest}
+import com.twitter.finatra.http.test.{HttpTest, EmbeddedHttpServer}
 import com.twitter.finatra.httpclient.RequestBuilder
-import com.twitter.inject.server.FeatureTest
 
 class StreamingServerFeatureTest extends FeatureTest with HttpTest {
 
