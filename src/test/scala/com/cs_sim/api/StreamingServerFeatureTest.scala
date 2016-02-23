@@ -6,6 +6,7 @@ package com.cs_sim.api
 
 import com.twitter.finatra.http.test.{HttpTest, EmbeddedHttpServer}
 import com.twitter.finatra.httpclient.RequestBuilder
+import com.twitter.inject.server.FeatureTest
 
 class StreamingServerFeatureTest extends FeatureTest with HttpTest {
 
