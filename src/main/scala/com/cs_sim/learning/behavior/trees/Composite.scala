@@ -1,4 +1,4 @@
-package com.cs_sim.learning.behavior
+package com.cs_sim.learning.behavior.trees
 
 /**
   * Created by dpinto on 23/02/2016.
@@ -13,17 +13,4 @@ object Selector {
   def unapplySeq(nodes: Seq[Node]): Option[Seq[Node]] = Some(nodes)
 }
 
-//class Sequence extends Composite
-
-
-object Main extends App {
-  val sel = (Node("a"), Node("b"), Node("c"))
-
-
-  sel match {
-    case Selector(rest@_*) => {
-      println(rest)
-    }
-    case a@_ => println("hello")
-  }
-}
+class Sequence extends Composite
