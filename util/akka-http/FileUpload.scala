@@ -1,7 +1,7 @@
 /**
   * Created by dpinto on 29/02/2016.
   */
-
+/*
 val uploadVideo =
   path("video") {
     entity(as[Multipart.FormData]) { formData =>
@@ -40,3 +40,4 @@ val uploadVideo =
     }
   }
 
+*/

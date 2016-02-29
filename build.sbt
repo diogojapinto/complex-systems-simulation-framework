@@ -11,11 +11,6 @@ lazy val versions = new {
   val scalaTest = "2.2.3"
 }
 
-resolvers ++= Seq(
-  Resolver.sonatypeRepo("releases"),
-  "Twitter Maven" at "https://maven.twttr.com"
-)
-
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor" % versions.akka,
   "com.typesafe.akka" %% "akka-agent" % versions.akka,

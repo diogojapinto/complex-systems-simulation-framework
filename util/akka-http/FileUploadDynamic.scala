@@ -1,7 +1,7 @@
 /**
   * Created by dpinto on 29/02/2016.
   */
-
+/*
 val splitLines = Framing.delimiter(ByteString("\n"), 256)
 
 val csvUploads =
@@ -26,3 +26,4 @@ val csvUploads =
     }
   }
 
+*/
