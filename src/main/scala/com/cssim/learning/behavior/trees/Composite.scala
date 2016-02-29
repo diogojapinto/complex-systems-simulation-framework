@@ -1,4 +1,4 @@
-package com.cs_sim.learning.behavior.trees
+package com.cssim.learning.behavior.trees
 
 /**
   * Created by dpinto on 23/02/2016.
@@ -13,4 +13,4 @@ object Selector {
   def unapplySeq(nodes: Seq[Node]): Option[Seq[Node]] = Some(nodes)
 }
 
-class Sequence extends Composite
+class Sequence(nodes: Seq[Node]) extends Composite(nodes)

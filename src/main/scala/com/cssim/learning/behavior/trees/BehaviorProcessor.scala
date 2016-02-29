@@ -1,4 +1,4 @@
-package com.cs_sim.learning.behavior.trees
+package com.cssim.learning.behavior.trees
 
 /**
   * Created by dpinto on 23/02/2016.

@@ -1,4 +1,4 @@
-package com.cs_sim.simulation.framework
+package com.cssim.simulation.framework
 
 import akka.actor.{Actor, ActorRef}
 
