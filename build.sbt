@@ -19,12 +19,12 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-testkit" % versions.akka,
   "com.typesafe.akka" %% "akka-cluster-tools" % versions.akka,
 
-  "com.typesafe.akka" %% "akka-stream-experimental" % versions.akkaStream,
-  "com.typesafe.akka" %% "akka-http-core-experimental" % versions.akkaStream,
-  "com.typesafe.akka" %% "akka-http-experimental" % versions.akkaStream,
-  "com.typesafe.akka" %% "akka-http-testkit-experimental" % versions.akkaStream,
-  "com.typesafe.akka" %% "akka-http-spray-json-experimental" % versions.akkaStream,
-  "com.typesafe.akka" %% "akka-http-xml-experimental" % versions.akkaStream,
+  "com.typesafe.akka" %% "akka-stream" % versions.akka,
+  "com.typesafe.akka" %% "akka-http-core" % versions.akka,
+  "com.typesafe.akka" % "akka-http-experimental_2.11" % versions.akka,
+  "com.typesafe.akka" %% "akka-http-testkit" % versions.akka,
+  "com.typesafe.akka" %% "akka-http-spray-json-experimental" % versions.akka,
+  //"com.typesafe.akka" %% "akka-http-xml-experimental" % versions.akka,
 
   "org.scalatest" %% "scalatest" % versions.scalaTest % "test"
 )

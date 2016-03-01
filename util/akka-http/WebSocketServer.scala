@@ -9,9 +9,8 @@ import akka.http.scaladsl.server.Directives._
 
 import scala.concurrent.duration._
 
-/**
-  * Created by dpinto on 29/02/2016.
-  */
+import akka.http.scaladsl.model.ws._
+
 
 object SocketMain extends App {
   implicit val system = ActorSystem("my-system")
@@ -31,7 +30,7 @@ object SocketMain extends App {
 
   val websocketRoute =
     path("greeter") {
-      handleWebsocketMessages(greeter)
+      handleWebSocketMessages(greeter)
     }
 
   val bindingFuture = Http().bindAndHandle(websocketRoute, "localhost", 8080)
@@ -44,14 +43,6 @@ object SocketMain extends App {
 }
 
 /*
-
-
-import org.scalatest._
-import play.api.test._
-import play.api.test.Helpers._
-import org.scalatestplus.play._
-
-
 // tests:
 // create a testing probe representing the client-side
 val wsClient = WSProbe()
