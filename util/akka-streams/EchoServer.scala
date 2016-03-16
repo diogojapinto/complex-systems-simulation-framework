@@ -2,7 +2,6 @@ import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.Tcp.{IncomingConnection, ServerBinding}
 import akka.stream.scaladsl._
-import akka.stream.io.Framing
 import akka.util.ByteString
 
 import scala.concurrent.Future
