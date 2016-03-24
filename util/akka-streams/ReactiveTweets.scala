@@ -8,7 +8,7 @@ import scala.concurrent.Future
 /**
   * Created by dpinto on 01/03/2016.
   */
-
+/*
 final case class Author(handle: String)
 
 final case class Hashtag(name: String)
@@ -81,4 +81,4 @@ object ReactiveTweets extends App {
 
 }
 
-
+*/

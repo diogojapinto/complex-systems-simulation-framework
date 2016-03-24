@@ -1,3 +1,5 @@
 .idea
 target
 src/main/resources
+dropwizard-render.yml
+data/

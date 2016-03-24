@@ -9,7 +9,7 @@ import scala.util.{Failure, Success}
 /**
   * Created by dpinto on 01/03/2016.
   */
-
+/*
 object SimpleExample extends App {
 
   implicit val system = ActorSystem("QuickStart")
@@ -76,4 +76,4 @@ object SimpleExample extends App {
   Source(1 to 6).to(otherSink)
 
 
-}
+}*/
