@@ -18,6 +18,7 @@ object MogMain extends App {
 
   implicit val system = ActorSystem()
   implicit val materializer = ActorMaterializer()
+
   import system.dispatcher
 
   // Future[Done] is the materialized value of Sink.foreach,
@@ -52,16 +53,18 @@ object MogMain extends App {
       |    ]
       |}""".stripMargin
   )).concatMat(Source.maybe)(Keep.right)
-
   // flow to use (note: not re-usable!)
-  val webSocketFlow = Http().webSocketClientFlow(WebSocketRequest("ws://echo.websocket.org"))//("ws://192.168.1.34:8082/events/"))
+  val webSocketFlow = Http().webSocketClientFlow(WebSocketRequest("ws://192.168.1.87:8082/events/"))
+  //val webSocketFlow = Http().webSocketClientFlow(WebSocketRequest("ws://echo.websocket.org"))
 
   // the materialized value is a tuple with
   // upgradeResponse is a Future[WebSocketUpgradeResponse] that
   // completes or fails when the connection succeeds or fails
   // and closed is a Future[Done] with the stream completion from the incoming sink
+
   val (upgradeResponse, closed) =
     outgoing
+      .merge(Source.actorPublisher[TextMessage.Strict](RequestPublisher.props))
       .viaMat(webSocketFlow)(Keep.right) // keep the materialized Future[WebSocketUpgradeResponse]
       .toMat(incoming)(Keep.both) // also keep the Future[Done]
       .run()
@@ -77,6 +80,6 @@ object MogMain extends App {
   }
 
   // in a real application you would not side effect here
-  //connected.onComplete(println)
-  //closed.foreach(_ => println("closed"))
+  connected.onComplete(println)
+  closed.foreach(_ => println("closed"))
 }

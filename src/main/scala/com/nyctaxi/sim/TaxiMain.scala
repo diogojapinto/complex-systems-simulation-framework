@@ -8,8 +8,11 @@ import akka.stream.scaladsl.{FileIO, Framing, Keep, Sink, Source}
 import akka.util.ByteString
 
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration._
 
 object TaxiMain extends App {
+
+  case class Tick()
 
   implicit val system = ActorSystem("reactive-csv")
   implicit val materializer = ActorMaterializer()
@@ -22,6 +25,8 @@ object TaxiMain extends App {
     System.exit(1)
   }
 
+  val tickSource = Source.tick(1 second, 2 second, Tick())
+
   val file = new File(filePath)
 
   FileIO.fromFile(file)
@@ -32,7 +37,7 @@ object TaxiMain extends App {
       println(elem)
       elem
     }
-    .concatMat(Source.maybe)(Keep.right)
+    .concatMat(tickSource)(Keep.right)
     .runWith(Sink.ignore).onComplete { a =>
     println(a)
     system.terminate()
