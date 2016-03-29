@@ -12,6 +12,7 @@ import akka.stream.scaladsl._
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.ws._
 
+import scala.concurrent.duration._
 import scala.concurrent.Future
 
 object MogMain extends App {
@@ -52,9 +53,9 @@ object MogMain extends App {
       |        'Document'
       |    ]
       |}""".stripMargin
-  )).concatMat(Source.maybe)(Keep.right)
+  ))
   // flow to use (note: not re-usable!)
-  val webSocketFlow = Http().webSocketClientFlow(WebSocketRequest("ws://192.168.1.87:8082/events/"))
+  val webSocketFlow = Http().webSocketClientFlow(WebSocketRequest("ws://192.168.1.32:8082/events/"))
   //val webSocketFlow = Http().webSocketClientFlow(WebSocketRequest("ws://echo.websocket.org"))
 
   // the materialized value is a tuple with
@@ -64,7 +65,8 @@ object MogMain extends App {
 
   val (upgradeResponse, closed) =
     outgoing
-      .merge(Source.actorPublisher[TextMessage.Strict](RequestPublisher.props))
+      //.merge(Source.actorPublisher[TextMessage.Strict](RequestPublisher.props))
+      .merge(Source.tick(10 seconds, 10 seconds, TextMessage("{action: 'stayalive'}")))
       .viaMat(webSocketFlow)(Keep.right) // keep the materialized Future[WebSocketUpgradeResponse]
       .toMat(incoming)(Keep.both) // also keep the Future[Done]
       .run()
