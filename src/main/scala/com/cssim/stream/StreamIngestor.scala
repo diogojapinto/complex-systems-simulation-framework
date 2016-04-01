@@ -8,7 +8,7 @@ import com.cssim.lib.AgentAction
 /**
   * Created by dpinto on 29/03/2016.
   */
-class StreamIngestor[T](sourceEnv: StreamSource[T], parserEnv: Parser[T]) {
+case class StreamIngestor[T](sourceEnv: StreamSource[T], parserEnv: Parser[T]) {
 
   val source = sourceEnv()
   val parser = parserEnv()
