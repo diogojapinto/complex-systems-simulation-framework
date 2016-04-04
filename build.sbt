@@ -41,8 +41,8 @@ libraryDependencies ++= Seq(
 
   "org.scalatest" %% "scalatest" % versions.scalaTest % "test",
 
-  "org.deeplearning4j" % "deeplearning4j-core" % versions.deeplearning4j,
-  /*"org.deeplearning4j" % "deeplearning4j-nlp" % versions.deeplearning4j excludeAll(
+  "org.deeplearning4j" % "deeplearning4j-core" % versions.deeplearning4j/*,
+  "org.deeplearning4j" % "deeplearning4j-nlp" % versions.deeplearning4j excludeAll(
     ExclusionRule("com.typesafe.akka", "akka-contrib"),
     ExclusionRule("com.typesafe.akka", "akka-actor"),
     ExclusionRule("com.typesafe.akka", "akka-cluster"),
@@ -53,7 +53,7 @@ libraryDependencies ++= Seq(
     ExclusionRule("com.typesafe.akka", "akka-actor"),
     ExclusionRule("com.typesafe.akka", "akka-cluster"),
     ExclusionRule("com.typesafe.akka", "akka-remote")
-    ),*/
+    ),
   "org.nd4j" % "nd4j-x86" % versions.deeplearning4j,
-  "org.nd4j" % "canova-api" % versions.canova
+  "org.nd4j" % "canova-api" % versions.canova*/
 )

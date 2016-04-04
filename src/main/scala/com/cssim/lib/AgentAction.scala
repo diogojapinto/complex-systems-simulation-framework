@@ -1,8 +1,10 @@
 package com.cssim.lib
 
-/**
-  * Created by dpinto on 24/03/2016.
-  */
-class AgentAction {
+import scala.concurrent.duration.Duration
 
+
+abstract class AgentAction {
+  val agentIdentifier: String
+  val attributes: Map[String, DataType]
+  val duration: Duration
 }

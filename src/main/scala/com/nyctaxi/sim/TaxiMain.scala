@@ -37,7 +37,7 @@ object TaxiMain extends App {
       println(elem)
       elem
     }
-    .concatMat(tickSource)(Keep.right)
+    .mergeMat(tickSource)(Keep.right)
     .runWith(Sink.ignore).onComplete { a =>
     println(a)
     system.terminate()

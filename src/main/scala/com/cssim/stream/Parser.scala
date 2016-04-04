@@ -15,7 +15,7 @@ trait Parser[T] extends GraphStage[FlowShape[T, AgentAction]] {
       .map(parse)
 
   private[this] val in = Inlet[T]("Parser.in")
-  private[this] val out = Outlet[T]("Parser.out")
+  private[this] val out = Outlet[AgentAction]("Parser.out")
 
   override private[this] val shape = FlowShape(in, out)
 

@@ -5,10 +5,10 @@ import akka.stream.SourceShape
 import akka.stream.scaladsl.{Flow, GraphDSL, Sink, Source}
 import com.cssim.lib.AgentAction
 
-/**
-  * Created by dpinto on 29/03/2016.
-  */
+
 case class StreamIngestor[T](sourceEnv: StreamSource[T], parserEnv: Parser[T]) {
+
+  type T
 
   val source = sourceEnv()
   val parser = parserEnv()
