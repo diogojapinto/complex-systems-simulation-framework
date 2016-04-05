@@ -6,18 +6,18 @@ import akka.stream.stage.{GraphStage, GraphStageLogic, InHandler, OutHandler}
 import akka.stream.{Attributes, FlowShape, Inlet, Outlet}
 import com.cssim.lib.AgentAction
 
-trait Parser[T] extends GraphStage[FlowShape[T, AgentAction]] {
+trait Parser extends GraphStage[FlowShape[String, AgentAction]] {
 
-  def parse(obj: T): AgentAction
+  def parse(obj: String): AgentAction
 
-  def apply(): Flow[T, AgentAction, NotUsed] =
-    Flow[T]
+  def apply(): Flow[String, AgentAction, NotUsed] =
+    Flow[String]
       .map(parse)
 
-  private[this] val in = Inlet[T]("Parser.in")
+  private[this] val in = Inlet[String]("Parser.in")
   private[this] val out = Outlet[AgentAction]("Parser.out")
 
-  override private[this] val shape = FlowShape(in, out)
+  override val shape = new FlowShape(in, out)
 
   override def createLogic(inheritedAttributes: Attributes): GraphStageLogic =
     new GraphStageLogic(shape) {

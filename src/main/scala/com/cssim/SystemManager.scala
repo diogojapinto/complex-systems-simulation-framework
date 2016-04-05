@@ -10,7 +10,7 @@ import com.cssim.stream.StreamIngestor
 import scala.collection.mutable
 
 
-class SystemManager(ingestor: StreamIngestor[Any]) {
+class SystemManager(ingestor: StreamIngestor) {
 
   implicit val system = ActorSystem()
   implicit val materializer = ActorMaterializer()

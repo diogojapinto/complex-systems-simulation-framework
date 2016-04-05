@@ -22,9 +22,9 @@ import akka.stream.scaladsl.Source
   *   http://doc.akka.io/docs/akka/2.4.2/scala/stream/stream-cookbook.html#stream-cookbook-scala
   *
   */
-trait StreamSource[T] {
-  def source: Source[T, NotUsed]
+trait StreamSource {
+  def source: Source[String, NotUsed]
 
-  def apply(): Source[T, NotUsed] = source
+  def apply(): Source[String, NotUsed] = source
 }
 

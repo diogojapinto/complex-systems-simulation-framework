@@ -2,11 +2,11 @@ package com.cssim.stream
 
 import akka.NotUsed
 import akka.stream.SourceShape
-import akka.stream.scaladsl.{Flow, GraphDSL, Sink, Source}
+import akka.stream.scaladsl.{GraphDSL, Source}
 import com.cssim.lib.AgentAction
 
 
-case class StreamIngestor[T](sourceEnv: StreamSource[T], parserEnv: Parser[T]) {
+case class StreamIngestor(sourceEnv: StreamSource, parserEnv: Parser) {
 
   type T
 
@@ -18,9 +18,9 @@ case class StreamIngestor[T](sourceEnv: StreamSource[T], parserEnv: Parser[T]) {
       (streamSource, parserFlow) =>
         import GraphDSL.Implicits._
 
-        source ~> parser
+        streamSource ~> parserFlow
 
-        SourceShape(parser.shape.out)
+        SourceShape(parserFlow.out)
     })
 
   def apply(): Source[AgentAction, (NotUsed, NotUsed)] = sourceGraph
