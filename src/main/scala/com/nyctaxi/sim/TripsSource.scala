@@ -12,7 +12,7 @@ import com.cssim.stream.StreamSource
   */
 object TripsSource extends StreamSource {
 
-  private val filePath = "./data/trip_1.csv"
+  private val filePath = "./data/taxi/trip_1.csv"
 
   if (!new java.io.File(filePath).exists) {
     System.err.println("File not found")
