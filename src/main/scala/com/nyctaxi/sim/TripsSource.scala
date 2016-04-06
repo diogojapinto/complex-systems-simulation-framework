@@ -7,9 +7,7 @@ import akka.stream.scaladsl.{FileIO, Framing, Keep, Source}
 import akka.util.ByteString
 import com.cssim.stream.StreamSource
 
-/**
-  * Created by diogo on 04-04-2016.
-  */
+
 object TripsSource extends StreamSource {
 
   private val filePath = "./data/taxi/trip_1.csv"

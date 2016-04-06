@@ -1,4 +1,4 @@
-import sbt.ExclusionRule
+
 
 name := "Complex Systems Simulation Framework"
 
@@ -8,9 +8,9 @@ scalaVersion := "2.11.7"
 
 lazy val versions = new {
   val scalaReflect = "2.11.7"
-  val scalaXml = "1.0.4"
-  val akka = "2.4.2"
-  val akkaStream = "2.0.3"
+  val scalaXml = "1.0.5"
+  val akka = "2.4.3"
+  val akkaStream = "2.4.3"
   val logback = "1.0.13"
   val scalaTest = "2.2.3"
   val deeplearning4j = "0.4-rc3.8"
@@ -19,8 +19,8 @@ lazy val versions = new {
 }
 
 libraryDependencies ++= Seq(
-  "org.scala-lang" % "scala-reflect" % versions.scalaReflect,
   "org.scala-lang.modules" %% "scala-xml" % versions.scalaXml,
+  "org.scala-lang" % "scala-reflect" % versions.scalaReflect,
 
   "com.typesafe.akka" %% "akka-contrib" % versions.akka,
   "com.typesafe.akka" %% "akka-actor" % versions.akka,

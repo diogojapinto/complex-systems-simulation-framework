@@ -1,16 +1,27 @@
 package com.nyctaxi.sim
 
 import com.cssim.lib.{AgentAction, DataType}
+import org.joda.time.Duration
 
 import scala.collection.mutable
-import scala.concurrent.duration._
 
+object Trip {
+  def apply(taxiId: String, delay: Duration) = new Trip(taxiId, delay)
+}
 
-class Trip(sourceId: String, targetId: String, delay: Duration) extends AgentAction {
+class Trip(val taxiId: String, val delay: Duration) extends AgentAction {
   override val attributes: scala.collection.mutable.Map[String, DataType] = mutable.Map.empty
 
-  def setSourceCoordinates(lat: Latitude, lon: Longitude) = {
-    attributes("sourceLatitude") = lat
-    attributes("sourceLongitude") = lon
+  override val sourceId: String = taxiId
+  override val targetId: String = sourceId
+
+  def setPickupCoordinates(lat: Latitude, lon: Longitude) = {
+    attributes("pickupLatitude") = lat
+    attributes("pickupLongitude") = lon
+  }
+
+  def setDropOffCoordinates(lat: Latitude, lon: Longitude) = {
+    attributes("dropoffLatitude") = lat
+    attributes("dropoffLongitude") = lon
   }
 }
