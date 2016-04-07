@@ -3,8 +3,7 @@ package com.cssim
 import akka.actor.{ActorSystem, Props}
 import akka.stream.scaladsl.{GraphDSL, RunnableGraph, Sink}
 import akka.stream.{ActorMaterializer, ClosedShape}
-import com.cssim.services.analysis.AnalysisModule
-import com.cssim.services.api.{ApiModule, Server}
+import com.cssim.services.{Server, Service}
 import com.cssim.stream.StreamIngestor
 
 import scala.collection.mutable
@@ -39,7 +38,7 @@ class SystemManager(ingestor: StreamIngestor) {
   }
 
   // prepare API server
-  val services = mutable.ListBuffer.empty[(AnalysisModule, ApiModule)]
+  val services = mutable.ListBuffer.empty[Service]
   val server = system.actorOf(Props(new Server), "server")
 
   import Server._

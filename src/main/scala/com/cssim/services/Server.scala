@@ -1,10 +1,9 @@
-package com.cssim.services.api
+package com.cssim.services
 
-import akka.actor.{Actor, ActorSystem, PoisonPill}
-import akka.http.scaladsl.server.Route
+import akka.actor.{Actor, PoisonPill}
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.marshallers.xml.ScalaXmlSupport._
 import akka.http.scaladsl.server.Directives._
+import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
 
 
