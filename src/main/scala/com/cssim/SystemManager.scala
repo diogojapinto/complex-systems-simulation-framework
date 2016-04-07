@@ -1,14 +1,11 @@
 package com.cssim
 
-import akka.NotUsed
 import akka.actor.{ActorSystem, Props}
-import akka.stream.{ActorMaterializer, ClosedShape}
 import akka.stream.scaladsl.{GraphDSL, RunnableGraph, Sink}
-import com.cssim.lib.AgentAction
+import akka.stream.{ActorMaterializer, ClosedShape}
 import com.cssim.services.analysis.AnalysisModule
 import com.cssim.services.api.{ApiModule, Server}
 import com.cssim.stream.StreamIngestor
-import com.nyctaxi.sim.Trip
 
 import scala.collection.mutable
 
@@ -20,16 +17,17 @@ class SystemManager(ingestor: StreamIngestor) {
 
   // prepare stream processing graph components
   val sourceIngestor = ingestor()
+  val sink = Sink.foreach(println)
 
   val runnableGraph =
-    RunnableGraph.fromGraph(GraphDSL.create(sourceIngestor) { implicit b =>
-      src =>
+    RunnableGraph.fromGraph(GraphDSL.create(sourceIngestor, sink)((_, _)) { implicit b =>
+      (src, snk) =>
         import GraphDSL.Implicits._
 
         // TODO: Exchange by broadcaster to services
-        val sink = Sink.foreach[AgentAction](println)
 
-        src ~> sink
+
+        src ~> snk
 
         ClosedShape
     })

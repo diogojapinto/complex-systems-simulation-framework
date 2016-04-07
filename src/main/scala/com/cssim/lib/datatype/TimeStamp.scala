@@ -6,10 +6,10 @@ import org.joda.time.format.DateTimeFormat
 
 object TimeStamp {
 
-  private val DatePattern = DateTimeFormat.forPattern("MM/dd/yyyy HH:mm:ss")
+  private val datePattern = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
 
   private def timeStamp2Numerical(value: String): Long = DateTime.parse(value).getMillis / 1000
-  private def numerical2TimeStamp(value: Long): String = (new DateTime(value * 1000)).toString(DatePattern)
+  private def numerical2TimeStamp(value: Long): String = (new DateTime(value * 1000)).toString(datePattern)
 
   def unapply(timeStamp: TimeStamp): Option[NumericalDiscrete] = Some(NumericalDiscrete(timeStamp2Numerical(timeStamp.dateTime)))
   def apply(arg: NumericalDiscrete): TimeStamp = new TimeStamp(numerical2TimeStamp(arg.value))
