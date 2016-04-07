@@ -1,10 +1,13 @@
 package com.cssim
 
-import akka.actor.{ActorSystem, Props}
-import akka.stream.scaladsl.{GraphDSL, RunnableGraph, Sink}
+import akka.actor.{ActorRef, ActorSystem, Props}
+import akka.http.scaladsl.server.Route
+import akka.stream.scaladsl.{Broadcast, GraphDSL, RunnableGraph, Sink}
 import akka.stream.{ActorMaterializer, ClosedShape}
-import com.cssim.services.{Server, Service}
+import com.cssim.lib.AgentAction
+import com.cssim.services.{AnalysisApi, AnalysisDataModel, AnalysisWorker, Server}
 import com.cssim.stream.StreamIngestor
+import org.reactivestreams.Subscriber
 
 import scala.collection.mutable
 
@@ -14,32 +17,46 @@ class SystemManager(ingestor: StreamIngestor) {
   implicit val system = ActorSystem()
   implicit val materializer = ActorMaterializer()
 
+  private val analysisGraphComponents = mutable.Buffer.empty[(String, AnalysisWorker, AnalysisDataModel)]
+  private val analysisApis = mutable.Buffer.empty[AnalysisApi]
+
+  def addAnalysisModule(name: String,
+                        worker: AnalysisWorker,
+                        dataModel: AnalysisDataModel,
+                        api: AnalysisApi): Unit = {
+
+    analysisGraphComponents.+=:((name, worker, dataModel))
+    analysisApis.+=:(api)
+  }
+
   // prepare stream processing graph components
   val sourceIngestor = ingestor()
-  val sink = Sink.foreach(println)
 
-  val runnableGraph =
-    RunnableGraph.fromGraph(GraphDSL.create(sourceIngestor, sink)((_, _)) { implicit b =>
-      (src, snk) =>
+  def runnableGraph =
+    RunnableGraph.fromGraph(GraphDSL.create(sourceIngestor) { implicit b =>
+      src =>
         import GraphDSL.Implicits._
 
         // TODO: Exchange by broadcaster to services
+        val broadcaster = b.add(new Broadcast[AgentAction](analysisGraphComponents.size, false))
 
+        for ((name, worker, model) <- analysisGraphComponents) {
+          broadcaster ~> worker ~> Sink.actorSubscriber(model.props)
+        }
 
-        src ~> snk
+        src ~> broadcaster
 
         ClosedShape
     })
 
-  val streamGraphThread = new Thread {
+  private val streamGraphThread = new Thread {
     override def run: Unit = {
       runnableGraph.run()
     }
   }
 
   // prepare API server
-  val services = mutable.ListBuffer.empty[Service]
-  val server = system.actorOf(Props(new Server), "server")
+  lazy val server = system.actorOf(Props(new Server(analysisApis)), "server")
 
   import Server._
 

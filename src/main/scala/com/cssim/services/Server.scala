@@ -3,24 +3,25 @@ package com.cssim.services
 import akka.actor.{Actor, PoisonPill}
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Directives._
-import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
 
 
 object Server {
+
   case class Start()
+
   case class Stop()
 
 }
 
-class Server(routes: Route*) extends Actor {
+class Server(apis: AnalysisApi*) extends Actor {
 
   import Server._
 
   var running = false
 
   override def receive = {
-    case Start() if !running =>
+    case Start() if !running => start()
     case Stop() if running =>
   }
 
@@ -28,7 +29,10 @@ class Server(routes: Route*) extends Actor {
     implicit val materializer = ActorMaterializer()
     implicit val ec = context.dispatcher
 
-    val compoundRoute = routes.reduceLeft(_ ~ _)
+    val compoundRoute =
+      apis
+        .map(api => api.route)
+        .reduceLeft(_ ~ _)
 
     val bindingFuture = Http()(context.system).bindAndHandle(compoundRoute, "localhost", 8080)
 

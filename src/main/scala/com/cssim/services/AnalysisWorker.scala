@@ -3,6 +3,7 @@ package com.cssim.services
 import akka.stream.stage.{GraphStage, GraphStageLogic}
 import akka.stream.{Attributes, FlowShape, Inlet, Outlet}
 import com.cssim.lib.AgentAction
+import AnalysisDataModel.ProcessedData
 
 abstract class AnalysisWorker extends GraphStage[FlowShape[AgentAction, ProcessedData]] {
 
