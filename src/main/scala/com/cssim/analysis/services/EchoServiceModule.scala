@@ -1,4 +1,4 @@
-package com.cssim.services.services
+package com.cssim.analysis.services
 
 import akka.actor.Props
 import akka.http.scaladsl.server.Route
@@ -6,10 +6,20 @@ import akka.stream.Attributes
 import akka.stream.stage.{GraphStageLogic, InHandler, OutHandler}
 import com.cssim.SystemManager
 import com.cssim.lib.AgentAction
-import com.cssim.services.AnalysisDataModel.{ProcessedData, Request}
-import com.cssim.services._
+import com.cssim.analysis.AnalysisDataModel.{ProcessedData, Request}
+import com.cssim.analysis._
+import akka.http.scaladsl.server.Directives._
+import com.cssim.learning.behavior.trees.ServicesProvider
+import akka.pattern.ask
+import akka.util.Timeout
 
-trait EchoServiceModule extends Service("echo") {
+import scala.concurrent.Await
+import scala.concurrent.duration._
+
+trait EchoServiceModule extends ServicesProvider {
+  this: SystemManager =>
+
+  implicit val moduleName = "echo"
 
   case class EchoRequest() extends Request
 
@@ -20,7 +30,8 @@ trait EchoServiceModule extends Service("echo") {
     var lastValue: EchoData = _
 
     override def processRequest(request: Request): ProcessedData = request match {
-      case EchoRequest() => lastValue
+      case EchoRequest() => println("request"); lastValue
+      case a => println(a); lastValue
     }
 
     override def storeData(data: ProcessedData): Unit = data match {
@@ -47,6 +58,21 @@ trait EchoServiceModule extends Service("echo") {
 
   object EchoApi extends AnalysisApi {
 
-    override def getHandler(request: List[String]): Route = ???
+    override def getHandler(request: List[String]): Route = {
+      implicit val timeout: Timeout = 30 second
+      val request = analysisDataModelActors(moduleName) ? EchoRequest
+      val result = Await.result(request, 30 second).asInstanceOf[EchoData]
+      val resultData = result match {case EchoData(data) => data}
+
+      complete(resultData.toString)
+    }
+
   }
+
+  val dataModel = Props(new EchoDataModel)
+  val worker = EchoWorker
+  val api = EchoApi
+
+
+  addAnalysisModule(moduleName, worker, dataModel, api)
 }

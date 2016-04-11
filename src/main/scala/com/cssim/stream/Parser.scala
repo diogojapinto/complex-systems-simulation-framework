@@ -10,5 +10,5 @@ trait Parser extends {
 
   def apply(): Flow[String, AgentAction, NotUsed] =
     Flow[String]
-      .map(parse)z
+      .map(parse)
 }

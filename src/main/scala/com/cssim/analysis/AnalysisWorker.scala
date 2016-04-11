@@ -1,4 +1,4 @@
-package com.cssim.services
+package com.cssim.analysis
 
 import akka.stream.stage.{GraphStage, GraphStageLogic}
 import akka.stream.{Attributes, FlowShape, Inlet, Outlet}

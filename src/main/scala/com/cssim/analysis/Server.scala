@@ -1,4 +1,4 @@
-package com.cssim.services
+package com.cssim.analysis
 
 import akka.actor.{Actor, PoisonPill}
 import akka.http.scaladsl.Http
@@ -14,7 +14,7 @@ object Server {
 
 }
 
-class Server(apis: AnalysisApi*) extends Actor {
+class Server(apis: Seq[AnalysisApi]) extends Actor {
 
   import Server._
 
