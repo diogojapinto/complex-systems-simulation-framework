@@ -1,7 +1,7 @@
 package com.cssim
 
 import akka.actor.{ActorSystem, Props}
-import akka.stream.scaladsl.{Broadcast, GraphDSL, RunnableGraph, Sink}
+import akka.stream.scaladsl.{Broadcast, Flow, GraphDSL, RunnableGraph, Sink}
 import akka.stream.{ActorMaterializer, ClosedShape}
 import com.cssim.learning.behavior.trees.ServicesProvider
 import com.cssim.lib.AgentAction
@@ -24,11 +24,13 @@ class SystemManager(val ingestor: StreamIngestor) extends ServicesProvider {
 
         val broadcaster = b.add(new Broadcast[AgentAction](analysisGraphComponents.size, false))
 
-        for ((name, worker, model) <- analysisGraphComponents) {
-          broadcaster ~> worker ~> Sink.actorSubscriber(model).mapMaterializedValue{actorRef => println(name); analysisDataModelActors.+=(name -> actorRef)}// ~> b.materializedValue.map(actorRef => analysisDataModelActors.+=(name -> actorRef)
-        }
-
         src ~> broadcaster
+
+        for ((name, worker, model) <- analysisGraphComponents) {
+          val workerFlow = Flow.fromGraph(worker)
+          broadcaster ~> workerFlow ~> Sink.actorSubscriber(model).mapMaterializedValue{
+            actorRef => analysisDataModelActors.+=(name -> actorRef)}
+        }
 
         ClosedShape
     })

@@ -16,22 +16,25 @@ import akka.util.Timeout
 import scala.concurrent.Await
 import scala.concurrent.duration._
 
+object EchoServiceModule {
+  case object EchoRequest extends Request
+
+  case class EchoData(data: AgentAction) extends ProcessedData
+}
+
 trait EchoServiceModule extends ServicesProvider {
   this: SystemManager =>
 
+  import EchoServiceModule._
+
   implicit val moduleName = "echo"
-
-  case class EchoRequest() extends Request
-
-  case class EchoData(data: AgentAction) extends ProcessedData
 
   class EchoDataModel extends AnalysisDataModel {
 
-    var lastValue: EchoData = _
+    var lastValue: EchoData = EchoData(AgentAction.default)
 
     override def processRequest(request: Request): ProcessedData = request match {
-      case EchoRequest() => println("request"); lastValue
-      case a => println(a); lastValue
+      case EchoRequest => lastValue
     }
 
     override def storeData(data: ProcessedData): Unit = data match {
@@ -46,12 +49,14 @@ trait EchoServiceModule extends ServicesProvider {
 
         setHandlers(in, out, new InHandler with OutHandler {
           override def onPush(): Unit = {
+            println(grab(in))
             pull(in)
           }
 
           override def onPull(): Unit = {
             push(out, EchoData(grab(in)))
           }
+
         })
       }
   }
@@ -66,7 +71,6 @@ trait EchoServiceModule extends ServicesProvider {
 
       complete(resultData.toString)
     }
-
   }
 
   val dataModel = Props(new EchoDataModel)

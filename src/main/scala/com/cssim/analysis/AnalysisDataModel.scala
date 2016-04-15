@@ -1,6 +1,6 @@
 package com.cssim.analysis
 
-import akka.actor.{ActorRef, Props}
+import akka.actor.Props
 import akka.stream.actor.ActorSubscriberMessage._
 import akka.stream.actor.{ActorSubscriber, MaxInFlightRequestStrategy, RequestStrategy}
 
@@ -33,6 +33,7 @@ abstract class AnalysisDataModel extends ActorSubscriber {
       storeData(data)
     case request: Request =>
       sender ! processRequest(request)
-    case a => println(a.getClass)
+    case _ =>
+      sender ! "Invalid request"
   }
 }

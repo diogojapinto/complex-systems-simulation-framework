@@ -1,11 +1,18 @@
 package com.cssim.lib
 
 import org.joda.time.Duration
-import play.api.libs.json.Writes
-import play.api.libs.json._
+import play.api.libs.json.{Writes, _}
 
 import scala.collection.mutable
 
+object AgentAction {
+  def default: AgentAction = new AgentAction {
+    override val sourceId: String = "empty"
+    override val delay: Duration = new Duration(0)
+    override val attributes: mutable.Map[String, DataType] = mutable.Map.empty
+    override val targetId: String = "empty"
+  }
+}
 
 abstract class AgentAction {
   val sourceId: String

@@ -1,6 +1,5 @@
 package com.nyctaxi.sim
 
-import com.cssim.lib.NumericalDiscrete
 import com.cssim.stream.Parser
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.{DateTime, Duration}
@@ -26,7 +25,7 @@ object TripsParser extends Parser {
     val elements = obj.stripMargin.split(",")
 
     val sourceId = elements(TaxiIdIndex)
-    val duration = NumericalDiscrete(elements(DurationIndex).toInt)
+    //val duration = NumericalDiscrete(elements(DurationIndex).toInt)
     val pickupTime = DateTime.parse(elements(PickupTimeIndex), datePattern)
     val pickupLatitude = Latitude(elements(PickupLatitudeIndex).toDouble)
     val pickupLongitude = Longitude(elements(PickupLongitudeIndex).toDouble)
