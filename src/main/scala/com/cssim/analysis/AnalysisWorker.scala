@@ -10,7 +10,7 @@ abstract class AnalysisWorker extends GraphStage[FlowShape[AgentAction, Processe
   val in: Inlet[AgentAction] = Inlet("AnalysisWorker.in")
   val out: Outlet[ProcessedData] = Outlet("AnalysisWorker.out")
 
-  override def shape: FlowShape[AgentAction, ProcessedData] = new FlowShape(in, out)
+  override def shape: FlowShape[AgentAction, ProcessedData] = FlowShape.of(in, out)
 
   override def createLogic(inheritedAttributes: Attributes): GraphStageLogic
 

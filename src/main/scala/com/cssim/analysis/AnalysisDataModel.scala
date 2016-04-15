@@ -10,7 +10,7 @@ object AnalysisDataModel {
   type AnalysisDataModelProps = Props
 
   abstract class ProcessedData
-  abstract class Request
+  abstract class DataRequest
 }
 
 abstract class AnalysisDataModel extends ActorSubscriber {
@@ -26,12 +26,12 @@ abstract class AnalysisDataModel extends ActorSubscriber {
 
   def storeData(data: ProcessedData): Unit
 
-  def processRequest(request: Request): ProcessedData
+  def processRequest(request: DataRequest): ProcessedData
 
   override def receive: Receive = {
     case OnNext(data: ProcessedData) =>
       storeData(data)
-    case request: Request =>
+    case request: DataRequest =>
       sender ! processRequest(request)
     case _ =>
       sender ! "Invalid request"
