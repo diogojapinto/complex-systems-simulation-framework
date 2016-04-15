@@ -1,6 +1,5 @@
 package com.cssim.analysis.services.echo
 
-import akka.NotUsed
 import akka.actor.{ActorRef, Props}
 import akka.http.scaladsl.model.ws.{Message, TextMessage}
 import akka.http.scaladsl.server.Directives._

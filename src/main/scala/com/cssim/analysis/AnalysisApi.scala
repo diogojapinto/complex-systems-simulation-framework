@@ -3,7 +3,7 @@ package com.cssim.analysis
 import akka.http.scaladsl.model.ws.Message
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
-import akka.stream.scaladsl.{Flow, Source}
+import akka.stream.scaladsl.Flow
 import sun.reflect.generics.reflectiveObjects.NotImplementedException
 
 
@@ -23,13 +23,12 @@ abstract class AnalysisApi(implicit val moduleName: String) {
           getHandler(requestSegments)
         }
       } ~
-      path("socket" / Segments) { requestSegments =>
-        handleWebSocketMessages(socketHandler(requestSegments))
-      } ~
-      path("plot" / Segments) { requestSegments =>
-        get {
-          plotHandler(requestSegments)
+        path("socket" / Segments) { requestSegments =>
+          handleWebSocketMessages(socketHandler(requestSegments))
+        } ~
+        path("plot" / Segments) { requestSegments =>
+          getFromFile("resources/index.html")
+          //plotHandler(requestSegments)
         }
-      }
     }
 }
