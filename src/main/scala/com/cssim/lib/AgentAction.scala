@@ -37,9 +37,9 @@ abstract class AgentAction {
       val attributesJsonObj =
         attributes.foldLeft(Json.obj()) { case (accum, (key, data)) =>
           data match {
-            case Categorical(value) => accum + (key -> Json.toJson(value))
-            case NumericalContinuous(value) => accum + (key -> Json.toJson(value))
-            case NumericalDiscrete(value) => accum + (key -> Json.toJson(value))
+            case CategoricalNominal(value) => accum + (key -> Json.toJson(value))
+            case Quantitative(value) => accum + (key -> Json.toJson(value))
+            case CategoricalOrdered(value) => accum + (key -> Json.toJson(value))
           }
         }
 
