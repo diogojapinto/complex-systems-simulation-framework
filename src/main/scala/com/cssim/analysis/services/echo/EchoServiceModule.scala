@@ -155,6 +155,8 @@ trait EchoServiceModule extends ServicesProvider {
 
       Flow[Message].merge(source)
     }
+
+    override val dashboardPath = "resources/taxi"
   }
 
   val dataModel = Props(new EchoDataModel)

@@ -15,7 +15,7 @@ import akka.http.scaladsl.model.ws._
 import scala.concurrent.duration._
 import scala.concurrent.Future
 
-object MogMain extends App {
+object MogOldMain extends App {
 
   implicit val system = ActorSystem()
   implicit val materializer = ActorMaterializer()

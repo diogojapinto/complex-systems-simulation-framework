@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Vis</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rickshaw/1.5.1/rickshaw.css">
+
+    <style>
+        #chart_container {
+            position: relative;
+            display: inline-block;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        #chart {
+            display: inline-block;
+            margin-left: 40px;
+        }
+        #y_axis {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 40px;
+        }
+        #legend {
+            display: inline-block;
+            vertical-align: top;
+            margin: 0 0 0 10px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div id="chart_container">
+    <div id="y_axis"></div>
+    <div id="chart"></div>
+</div>
+<div id="legend"></div>
+
+
+<!-- Javascript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.js" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rickshaw/1.5.1/rickshaw.js"></script>
+
+<script>
+
+    var tv = 250;
+
+    // instantiate our graph!
+    var graph = new Rickshaw.Graph( {
+        element: document.getElementById("chart"),
+        width: 900,
+        height: 500,
+        renderer: 'line',
+        series: new Rickshaw.Series.FixedDuration([{ name: 'one' }], undefined, {
+            timeInterval: tv,
+            maxDataPoints: 100,
+            timeBase: new Date().getTime() / 1000
+        })
+    } );
+
+    graph.render();
+
+    // add some data every so often
+
+    var i = 0;
+    var iv = setInterval( function() {
+
+        var data = { one: Math.floor(Math.random() * 40) + 120 };
+
+        var randInt = Math.floor(Math.random()*100);
+        data.two = (Math.sin(i++ / 40) + 4) * (randInt + 400);
+        data.three = randInt + 300;
+
+        graph.series.addData(data);
+        graph.render();
+
+    }, tv );
+
+</script>
+
+</body>
+</html>

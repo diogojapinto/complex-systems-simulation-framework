@@ -9,26 +9,27 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException
 
 abstract class AnalysisApi(implicit val moduleName: String) {
 
-  // Answer with complete(<json>)
   def getHandler(request: List[String]): Route = throw new NotImplementedException()
 
   def socketHandler(request: List[String]): Flow[Message, Message, Any] = throw new NotImplementedException()
 
-  def plotHandler(request: List[String]): Route = throw new NotImplementedException()
+  def dashboardPath: String = throw new NotImplementedException()
 
   lazy val route =
-    pathPrefix(moduleName) {
-      path("get" / Segments) { requestSegments =>
-        get {
-          getHandler(requestSegments)
-        }
-      } ~
-        path("socket" / Segments) { requestSegments =>
-          handleWebSocketMessages(socketHandler(requestSegments))
+      pathPrefix(moduleName) {
+        path("get" / Segments) { requestSegments =>
+          get {
+            getHandler(requestSegments)
+          }
         } ~
-        path("plot" / Segments) { requestSegments =>
-          getFromFile("resources/index.html")
-          //plotHandler(requestSegments)
-        }
-    }
+          path("socket" / Segments) { requestSegments =>
+            handleWebSocketMessages(socketHandler(requestSegments))
+          } ~
+          pathPrefix("dashboard") {
+            pathSingleSlash {
+              getFromFile(s"$dashboardPath/index.html")
+            } ~
+              getFromDirectory(s"$dashboardPath")
+          }
+      }
 }
