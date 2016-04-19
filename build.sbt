@@ -16,11 +16,15 @@ lazy val versions = new {
   val deeplearning4j = "0.4-rc3.8"
   val canova = "0.0.0.14"
   val play = "2.5.0"
+  val tepkin = "0.6"
+  val log4j = "1.2.17"
 }
 
 libraryDependencies ++= Seq(
   "org.scala-lang.modules" %% "scala-xml" % versions.scalaXml,
   "org.scala-lang" % "scala-reflect" % versions.scalaReflect,
+
+  "log4j" % "log4j" % versions.log4j,
 
   "com.typesafe.akka" %% "akka-contrib" % versions.akka,
   "com.typesafe.akka" %% "akka-actor" % versions.akka,
@@ -38,6 +42,8 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-http-xml-experimental" % versions.akka,
 
   "com.typesafe.play" % "play-json_2.11" % versions.play,
+
+  "com.github.jeroenr" %% "tepkin" % versions.tepkin,
 
   "org.scalatest" %% "scalatest" % versions.scalaTest % "test",
 

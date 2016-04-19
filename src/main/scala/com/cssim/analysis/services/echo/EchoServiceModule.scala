@@ -5,11 +5,9 @@ import akka.http.scaladsl.model.ws.{Message, TextMessage}
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.pattern.ask
-import akka.stream.Attributes
 import akka.stream.actor.ActorPublisher
 import akka.stream.actor.ActorPublisherMessage.{Cancel, Request}
 import akka.stream.scaladsl.{Flow, Source}
-import akka.stream.stage.{GraphStageLogic, InHandler, OutHandler}
 import akka.util.Timeout
 import com.cssim.SystemManager
 import com.cssim.analysis.AnalysisDataModel.{ProcessedData, DataRequest}
@@ -24,7 +22,7 @@ import scala.concurrent.duration._
 
 object EchoServiceModule {
 
-  case object EchoDataRequest$ extends DataRequest
+  case object EchoDataRequest extends DataRequest
 
   case object ContinuousEchoDataRequest$ extends DataRequest
 
@@ -47,15 +45,15 @@ trait EchoServiceModule extends ServicesProvider {
     var subscribedActors = mutable.Buffer.empty[ActorRef]
 
 
-    override def storeData(data: ProcessedData): Unit = data match {
-      case echoData@EchoData(_) =>
-        lastValue = echoData
-        subscribedActors.map(actorRef => actorRef ! echoData)
+    override def storeData(data: AgentAction): Unit = {
+      lastValue = EchoData(data)
+
+      subscribedActors.map(actorRef => actorRef ! lastValue)
     }
 
 
     override def processRequest(request: DataRequest): ProcessedData = request match {
-      case EchoDataRequest$ => lastValue
+      case EchoDataRequest => lastValue
       case ContinuousEchoDataRequest$ =>
 
         class EchoActor extends ActorPublisher[Message] {
@@ -109,32 +107,11 @@ trait EchoServiceModule extends ServicesProvider {
     }
   }
 
-  object EchoWorker extends AnalysisWorker {
-
-    override def createLogic(inheritedAttributes: Attributes): GraphStageLogic =
-      new GraphStageLogic(shape) {
-
-        setHandler(in, new InHandler {
-          @scala.throws[Exception](classOf[Exception])
-          override def onPush(): Unit = {
-            push(out, EchoData(grab(in)))
-          }
-        })
-
-        setHandler(out, new OutHandler {
-          @scala.throws[Exception](classOf[Exception])
-          override def onPull(): Unit = {
-            pull(in)
-          }
-        })
-      }
-  }
-
   object EchoApi extends AnalysisApi {
 
     override def getHandler(request: List[String]): Route = {
       implicit val timeout: Timeout = 30 second
-      val request = analysisDataModelActors(moduleName) ? EchoDataRequest$
+      val request = analysisDataModelActors(moduleName) ? EchoDataRequest
       val result = Await.result(request, 30 second).asInstanceOf[EchoData]
       val resultData = result match {
         case EchoData(data) => data
@@ -160,9 +137,8 @@ trait EchoServiceModule extends ServicesProvider {
   }
 
   val dataModel = Props(new EchoDataModel)
-  val worker = EchoWorker
   val api = EchoApi
 
 
-  addAnalysisModule(moduleName, worker, dataModel, api)
+  addAnalysisModule(moduleName, dataModel, api)
 }

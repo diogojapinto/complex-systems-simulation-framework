@@ -1,8 +1,9 @@
 package com.cssim.analysis
 
-import akka.actor.{Actor, PoisonPill}
+import akka.actor.{Actor, ActorLogging, PoisonPill}
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Directives._
+import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
 
 
@@ -14,7 +15,7 @@ object Server {
 
 }
 
-class Server(apis: Seq[AnalysisApi]) extends Actor {
+class Server(apis: Seq[AnalysisApi]) extends Actor with ActorLogging {
 
   import Server._
 
@@ -29,6 +30,11 @@ class Server(apis: Seq[AnalysisApi]) extends Actor {
     implicit val materializer = ActorMaterializer()
     implicit val ec = context.dispatcher
 
+    if (apis.size <= 0) {
+      log.warning("There are no services available. Server not starting")
+      return
+    }
+
     val compoundRoute =
       apis
         .map(api => api.route)
@@ -36,7 +42,7 @@ class Server(apis: Seq[AnalysisApi]) extends Actor {
 
     val bindingFuture = Http()(context.system).bindAndHandle(compoundRoute, "localhost", 8080)
 
-    println(s"Server online at http://localhost:8080/\nPress RETURN to stop...")
+    log.info(s"Server online at http://localhost:8080/\nPress RETURN to stop...")
     Console.readLine() // for the future transformations
     bindingFuture
       .flatMap(_.unbind()) // trigger unbinding from the port

@@ -31,9 +31,7 @@ object WebSocketTest extends App {
     }
 
   // send this as a message over the WebSocket
-  val outgoing = Source.single(TextMessage(
-    """hello""".stripMargin
-  ))
+  val outgoing = Source.single(TextMessage(""))
   // flow to use (note: not re-usable!)
   val webSocketFlow = Http().webSocketClientFlow(WebSocketRequest("ws://localhost:8080/echo/socket/"))
   //val webSocketFlow = Http().webSocketClientFlow(WebSocketRequest("ws://echo.websocket.org"))

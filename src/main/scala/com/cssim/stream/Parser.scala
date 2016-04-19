@@ -10,5 +10,15 @@ trait Parser extends {
 
   def apply(): Flow[String, AgentAction, NotUsed] =
     Flow[String]
-      .map(parse)
+      .map { obj =>
+        try {
+          parse(obj)
+        } catch {
+          case e: Exception =>
+            println("Exception found while parsing")
+            e.printStackTrace()
+
+            AgentAction.default
+        }
+      }
 }

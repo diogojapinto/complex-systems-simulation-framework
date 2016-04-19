@@ -22,15 +22,16 @@ class SystemManager(val ingestor: StreamIngestor) extends ServicesProvider {
       src =>
         import GraphDSL.Implicits._
 
-        val broadcaster = b.add(new Broadcast[AgentAction](analysisGraphComponents.size, false))
+        val broadcaster = b.add(new Broadcast[AgentAction](analysisGraphComponents.size + 1, false))
 
         src ~> broadcaster
 
-        for ((name, worker, model) <- analysisGraphComponents) {
-          val workerFlow = Flow.fromGraph(worker)
-          broadcaster ~> workerFlow ~> Sink.actorSubscriber(model).mapMaterializedValue{
+        for ((name, model) <- analysisGraphComponents) {
+          broadcaster ~> Sink.actorSubscriber(model).mapMaterializedValue{
             actorRef => analysisDataModelActors.+=(name -> actorRef)}
         }
+
+        broadcaster ~> Sink.ignore
 
         ClosedShape
     })
