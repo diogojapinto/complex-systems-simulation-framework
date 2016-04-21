@@ -4,7 +4,7 @@ import com.cssim.lib.CategoricalOrdered
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 
-object TimeStamp {
+/*object TimeStamp {
 
   private val datePattern = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
 
@@ -19,3 +19,4 @@ object TimeStamp {
 
 class TimeStamp(val dateTime: String) extends CategoricalOrdered(TimeStamp.timeStamp2Numerical(dateTime))
 
+*/

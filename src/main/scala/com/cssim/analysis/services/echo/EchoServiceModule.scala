@@ -20,11 +20,14 @@ import scala.collection.mutable
 import scala.concurrent.Await
 import scala.concurrent.duration._
 
+/**
+  * Example service. Echoes the last seen data to Get and Websocket requests.
+  */
 object EchoServiceModule {
 
   case object EchoDataRequest extends DataRequest
 
-  case object ContinuousEchoDataRequest$ extends DataRequest
+  case object ContinuousEchoDataRequest extends DataRequest
 
   case class EchoData(data: AgentAction) extends ProcessedData
 
@@ -37,6 +40,9 @@ trait EchoServiceModule extends ServicesProvider {
 
   import EchoServiceModule._
 
+  /**
+    * Module name, defined as implicit so that module components automatically access it
+    */
   implicit val moduleName = "echo"
 
   class EchoDataModel extends AnalysisDataModel {
@@ -54,7 +60,7 @@ trait EchoServiceModule extends ServicesProvider {
 
     override def processRequest(request: DataRequest): ProcessedData = request match {
       case EchoDataRequest => lastValue
-      case ContinuousEchoDataRequest$ =>
+      case ContinuousEchoDataRequest =>
 
         class EchoActor extends ActorPublisher[Message] {
 
@@ -123,7 +129,7 @@ trait EchoServiceModule extends ServicesProvider {
     override def socketHandler(request: List[String]): Flow[Message, Message, Any] = {
 
       implicit val timeout: Timeout = 30 second
-      val request = analysisDataModelActors(moduleName) ? ContinuousEchoDataRequest$
+      val request = analysisDataModelActors(moduleName) ? ContinuousEchoDataRequest
       val result = Await.result(request, 30 second).asInstanceOf[EchoSocketSource]
 
       val source = result match {

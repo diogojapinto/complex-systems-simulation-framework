@@ -5,10 +5,30 @@ import akka.stream.SourceShape
 import akka.stream.scaladsl.{GraphDSL, Source}
 import com.cssim.lib.AgentAction
 
+/**
+  * Companion object for StreamIngestor class.
+  *
+  * Defines a factory method for creation of StreamIngestor instances.
+  */
+object StreamIngestor {
 
-case class StreamIngestor(sourceEnv: StreamSource, parserEnv: Parser) {
+  /**
+    * Factory method for creation of StreamIngestor instances
+    *
+    * @param sourceEnv element that implements the StreamSource trait
+    * @param parserEnv element that implements the Parser trait
+    * @return new StreamIngestor element
+    */
+  def apply(sourceEnv: StreamSource, parserEnv: Parser) = new StreamIngestor(sourceEnv, parserEnv)
+}
 
-  type T
+/**
+  * Class responsible for connecting the source element from a StreamSource to the flow from a Parser.
+  *
+  * @param sourceEnv element that implements the StreamSource trait
+  * @param parserEnv element that implements the Parser trait
+  */
+class StreamIngestor(sourceEnv: StreamSource, parserEnv: Parser) {
 
   val source = sourceEnv()
   val parser = parserEnv()
@@ -23,6 +43,10 @@ case class StreamIngestor(sourceEnv: StreamSource, parserEnv: Parser) {
         SourceShape(parserFlow.out)
     })
 
+  /**
+    * Utility function that retrieves the compound source element, one that outputs AgentAction elements
+    *
+    * @return compound source element
+    */
   def apply(): Source[AgentAction, (NotUsed, NotUsed)] = sourceGraph
-
 }

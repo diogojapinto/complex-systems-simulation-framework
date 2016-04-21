@@ -31,7 +31,7 @@ class SystemManager(val ingestor: StreamIngestor) extends ServicesProvider {
             actorRef => analysisDataModelActors.+=(name -> actorRef)}
         }
 
-        broadcaster ~> Sink.ignore
+        broadcaster ~> Sink.foreach(println)
 
         ClosedShape
     })

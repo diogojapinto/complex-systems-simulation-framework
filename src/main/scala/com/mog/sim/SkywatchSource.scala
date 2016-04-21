@@ -15,7 +15,7 @@ import scala.concurrent.duration._
 
 object SkywatchSource extends StreamSource {
 
-  implicit val timeout: Timeout = 5 seconds
+  implicit val timeout: Timeout = 24 hours
 
   // Create client for connecting with the database
   val client = MongoClient("mongodb://192.168.1.131")

@@ -2,9 +2,6 @@ package com.nyctaxi.sim
 
 import com.cssim.lib.Quantitative
 
-class Latitude(lat: Double) extends Quantitative(lat)
-class Longitude(lon: Double) extends Quantitative(lon)
-
 // TODO: edit value conversion functions
 
 object Latitude {
@@ -28,3 +25,6 @@ object Longitude {
 
   def apply(arg: Double) = new Longitude(arg)
 }
+
+class Latitude(lat: Double) extends Quantitative(Latitude.latitude2Numerical(lat))
+class Longitude(lon: Double) extends Quantitative(Longitude.longitude2Numerical(lon))

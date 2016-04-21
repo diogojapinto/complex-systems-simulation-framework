@@ -6,27 +6,45 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
 
-
+/**
+  * Companion Object for the Server class
+  *
+  * Defines messages that may be sent to modify the behavior of a Server instance
+  */
 object Server {
 
-  case class Start()
+  /**
+    * Message to start a Server instance
+    */
+  case object Start
 
-  case class Stop()
 
+  /**
+    * Message to stop a Server instance
+    */
+  case object Stop
 }
 
+/**
+  * Serves through a REST API the analysis services.
+  *
+  * @param apis collection of API's that define routes the server must serve
+  */
 class Server(apis: Seq[AnalysisApi]) extends Actor with ActorLogging {
 
   import Server._
 
-  var running = false
+  private var running = false
 
   override def receive = {
-    case Start() if !running => start()
-    case Stop() if running =>
+    case Start if !running =>
+      running = true
+      start()
+    case Stop if running =>
   }
 
-  def start(): Unit = {
+
+  private def start(): Unit = {
     implicit val materializer = ActorMaterializer()
     implicit val ec = context.dispatcher
 
@@ -38,7 +56,7 @@ class Server(apis: Seq[AnalysisApi]) extends Actor with ActorLogging {
     val compoundRoute =
       apis
         .map(api => api.route)
-        .reduceLeft(_ ~ _)
+        .reduceLeft(_ ~ _)  // build compound route by properly appending api's routes
 
     val bindingFuture = Http()(context.system).bindAndHandle(compoundRoute, "localhost", 8080)
 
