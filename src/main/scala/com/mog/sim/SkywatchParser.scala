@@ -20,7 +20,7 @@ object SkywatchParser extends Parser {
 
     val insertDate = new DateTime(((json \ "insert_time").get).toString().toLong)
 
-
+    println(json)
 
     AgentAction.default
   }

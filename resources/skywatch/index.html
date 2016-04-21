@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Dark Admin</title>
+
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/local.css"/>
+
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- you need to include the shieldui css and js assets in order for the charts to work -->
+    <link rel="stylesheet" type="text/css"
+          href="http://www.shieldui.com/shared/components/latest/css/light-bootstrap/all.min.css"/>
+    <link id="gridcss" rel="stylesheet" type="text/css"
+          href="http://www.shieldui.com/shared/components/latest/css/dark-bootstrap/all.min.css"/>
+
+    <script type="text/javascript"
+            src="http://www.shieldui.com/shared/components/latest/js/shieldui-all.min.js"></script>
+    <script type="text/javascript" src="http://www.prepbootstrap.com/Content/js/gridData.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rickshaw/1.5.1/rickshaw.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rickshaw/1.5.1/rickshaw.js"></script>
+
+    <script type="text/javascript" src="js/extensions.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/extensions.css"/>
+
+    <script type="text/javascript" src="js/flows.js"></script>
+    <script type="text/javascript" src="js/assets_flow.js"></script>
+    <script type="text/javascript" src="js/days_flow.js"></script>
+
+</head>
+<body>
+<div id="wrapper">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">Admin Panel</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul id="active" class="nav navbar-nav side-nav">
+                <li class="selected"><a href="index.html"><i class="fa fa-bullseye"></i> Dashboard Flows</a></li>
+                <li><a href="index.html"><i class="fa fa-bullseye"></i> Dashboard Machines</a></li>
+                <li><a href="portfolio.html"><i class="fa fa-tasks"></i> Portfolio</a></li>
+                <li><a href="blog.html"><i class="fa fa-globe"></i> Blog</a></li>
+                <li><a href="signup.html"><i class="fa fa-list-ol"></i> SignUp</a></li>
+                <li><a href="register.html"><i class="fa fa-font"></i> Register</a></li>
+                <li><a href="timeline.html"><i class="fa fa-font"></i> Timeline</a></li>
+                <li><a href="forms.html"><i class="fa fa-list-ol"></i> Forms</a></li>
+                <li><a href="typography.html"><i class="fa fa-font"></i> Typography</a></li>
+                <li><a href="bootstrap-elements.html"><i class="fa fa-list-ul"></i> Bootstrap Elements</a></li>
+                <li><a href="bootstrap-grid.html"><i class="fa fa-table"></i> Bootstrap Grid</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1>Flows Dashboard
+                    <small>Operations Analytics</small>
+                </h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-9">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> Real-time Flows per type</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div id="content">
+                            <form id="side_panel">
+                                <h1>Random Data in the Future</h1>
+                                <section>
+                                    <div id="flows_legend"></div>
+                                </section>
+                                <section>
+                                    <div id="renderer_form" class="toggler">
+                                        <input type="radio" name="renderer" id="area" value="area" checked>
+                                        <label for="area">area</label>
+                                        <input type="radio" name="renderer" id="bar" value="bar">
+                                        <label for="bar">bar</label>
+                                        <input type="radio" name="renderer" id="line" value="line">
+                                        <label for="line">line</label>
+                                        <input type="radio" name="renderer" id="scatter" value="scatterplot">
+                                        <label for="scatter">scatter</label>
+                                    </div>
+                                </section>
+                                <section>
+                                    <div id="offset_form">
+                                        <label for="stack">
+                                            <input type="radio" name="offset" id="stack" value="zero" checked>
+                                            <span>stack</span>
+                                        </label>
+                                        <label for="stream">
+                                            <input type="radio" name="offset" id="stream" value="wiggle">
+                                            <span>stream</span>
+                                        </label>
+                                        <label for="pct">
+                                            <input type="radio" name="offset" id="pct" value="expand">
+                                            <span>pct</span>
+                                        </label>
+                                        <label for="value">
+                                            <input type="radio" name="offset" id="value" value="value">
+                                            <span>value</span>
+                                        </label>
+                                    </div>
+                                    <div id="interpolation_form">
+                                        <label for="cardinal">
+                                            <input type="radio" name="interpolation" id="cardinal" value="cardinal"
+                                                   checked>
+                                            <span>cardinal</span>
+                                        </label>
+                                        <label for="linear">
+                                            <input type="radio" name="interpolation" id="linear" value="linear">
+                                            <span>linear</span>
+                                        </label>
+                                        <label for="step">
+                                            <input type="radio" name="interpolation" id="step" value="step-after">
+                                            <span>step</span>
+                                        </label>
+                                    </div>
+                                </section>
+                                <section>
+                                    <h6>Smoothing</h6>
+                                    <div id="smoother"></div>
+                                </section>
+                                <section></section>
+                            </form>
+                            <div id="flows_chart_container" class="chart_container">
+                                <div id="flows_chart" class="chart"></div>
+                                <div id="flows_timeline" class="timeline"></div>
+                                <div id="flows_preview" class="preview"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-rss"></i> Summary</h3>
+                    </div>
+                    <div class="panel-body feed">
+                        <section class="feed-item">
+                            <div class="icon pull-left">
+                                <i class="fa fa-check-square"></i>
+                            </div>
+                            <div class="feed-item-body">
+                                <div class="text">
+                                    <h5>Successes:</h5> 10
+                                </div>
+                            </div>
+                        </section>
+                        <section class="feed-item">
+                            <div class="icon pull-left">
+                                <i class="fa fa-times"></i>
+                            </div>
+                            <div class="feed-item-body">
+                                <div class="text">
+                                    <h5>Failed:\</h5> 2
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> Assets per Flow</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div id="assets_flow_chart_container" class="chart_container">
+                            <div id="assets_flow_y_axis" class="y_axis"></div>
+                            <div id="assets_flow_chart" class="chart"></div>
+                        </div>
+                        <div id="assets_flow_legend" class="legend"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-magnet"></i> Flows per day</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div id="days_flow_chart" class="chart"></div>
+                        <div id="days_flow_legend" class="legend"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

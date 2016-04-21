@@ -6,7 +6,7 @@ import com.cssim.stream.StreamIngestor
 
 
 object SkywatchMain extends App{
-  val manager = new SystemManager(new StreamIngestor(SkywatchSource, SkywatchParser))// with EchoServiceModule
+  val manager = new SystemManager(new StreamIngestor(SkywatchSource, SkywatchParser)) with EchoServiceModule
 
   manager.init()
 }
