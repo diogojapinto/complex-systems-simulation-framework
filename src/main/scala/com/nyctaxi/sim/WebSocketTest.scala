@@ -1,21 +1,21 @@
-package com.mog.sim
+package com.nyctaxi.sim
 
 /**
   * Created by dpinto on 23/03/2016.
   */
 
+import akka.Done
 import akka.actor.ActorSystem
-import akka.{Done, NotUsed}
 import akka.http.scaladsl.Http
-import akka.stream.ActorMaterializer
-import akka.stream.scaladsl._
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.ws._
+import akka.stream.ActorMaterializer
+import akka.stream.scaladsl._
 
-import scala.concurrent.duration._
 import scala.concurrent.Future
+import scala.concurrent.duration._
 
-object MogMain extends App {
+object WebSocketTest extends App {
 
   implicit val system = ActorSystem()
   implicit val materializer = ActorMaterializer()
@@ -31,31 +31,9 @@ object MogMain extends App {
     }
 
   // send this as a message over the WebSocket
-  val outgoing = Source.single(TextMessage(
-    """{
-      |    action: 'start',
-      |    fields: [
-      |        'Assets.Document.Metadata.Metadata.CustomMetadata',
-      |        'Assets.Document.Metadata.Metadata.Duration'
-      |    ],
-      |    Assets.Document.Metadata.Metadata.CustomMetadata: [
-      |        'Document',
-      |        'Document',
-      |        'Array.last',
-      |        'Document',
-      |        'Array.all'
-      |    ],
-      |    Assets.Document.Metadata.Metadata.Duration: [
-      |        'Document',
-      |        'Document',
-      |        'Array.last',
-      |        'Document',
-      |        'Document'
-      |    ]
-      |}""".stripMargin
-  ))
+  val outgoing = Source.single(TextMessage(""))
   // flow to use (note: not re-usable!)
-  val webSocketFlow = Http().webSocketClientFlow(WebSocketRequest("ws://192.168.1.32:8082/events/"))
+  val webSocketFlow = Http().webSocketClientFlow(WebSocketRequest("ws://localhost:8080/echo/socket/"))
   //val webSocketFlow = Http().webSocketClientFlow(WebSocketRequest("ws://echo.websocket.org"))
 
   // the materialized value is a tuple with

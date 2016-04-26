@@ -5,7 +5,16 @@ import play.api.libs.json.{Writes, _}
 
 import scala.collection.mutable
 
+/**
+  * Companion object for the class AgentAction.
+  */
 object AgentAction {
+
+  /**
+    * Returns a default AgentAction
+    *
+    * @return default AgentAction object
+    */
   def default: AgentAction = new AgentAction {
     override val sourceId: String = "empty"
     override val delay: Duration = new Duration(0)
@@ -14,18 +23,36 @@ object AgentAction {
   }
 }
 
+/**
+  * Class that encodes the information that flows in the application's stream processing pipeline.
+  */
 abstract class AgentAction {
+
+  /**
+    * unique identifier of the action's source
+    */
   val sourceId: String
+
+  /**
+    *   unique identifier of the action's source
+    */
   val targetId: String
   val attributes: mutable.Map[String, DataType]
 
-  // amount of time passed since previous action
+  /**
+    * amount of time passed since previous action
+    */
   val delay: Duration
 
-  // warns the Simulation engine that this event is not to be simulated
+  /**
+    * warns the Simulation engine that this event is not to be simulated
+    */
   val FeedForwardOnly = false
 
-  implicit val agentActionWrites = new Writes[AgentAction] {
+  /**
+    * Converts a given AgentAction into a properly formed JSON element
+    */
+  private implicit val agentActionWrites = new Writes[AgentAction] {
 
     override def writes(action: AgentAction) = {
 
@@ -37,9 +64,9 @@ abstract class AgentAction {
       val attributesJsonObj =
         attributes.foldLeft(Json.obj()) { case (accum, (key, data)) =>
           data match {
-            case Categorical(value) => accum + (key -> Json.toJson(value))
-            case NumericalContinuous(value) => accum + (key -> Json.toJson(value))
-            case NumericalDiscrete(value) => accum + (key -> Json.toJson(value))
+            case CategoricalNominal(value) => accum + (key -> Json.toJson(value))
+            case Quantitative(value) => accum + (key -> Json.toJson(value))
+            case CategoricalOrdered(value) => accum + (key -> Json.toJson(value))
           }
         }
 
@@ -47,6 +74,11 @@ abstract class AgentAction {
     }
   }
 
+  /**
+    * Represents an AgentAction as a String, in JSON format
+    *
+    * @return a JSON String
+    */
   override def toString: String = {
     Json.toJson(this).toString()
   }

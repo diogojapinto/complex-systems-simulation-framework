@@ -3,6 +3,7 @@ package com.cssim.analysis
 import akka.actor.Props
 import akka.stream.actor.ActorSubscriberMessage._
 import akka.stream.actor.{ActorSubscriber, MaxInFlightRequestStrategy, RequestStrategy}
+import com.cssim.lib.AgentAction
 
 import scala.collection.mutable
 
@@ -10,7 +11,7 @@ object AnalysisDataModel {
   type AnalysisDataModelProps = Props
 
   abstract class ProcessedData
-  abstract class Request
+  abstract class DataRequest
 }
 
 abstract class AnalysisDataModel extends ActorSubscriber {
@@ -24,14 +25,14 @@ abstract class AnalysisDataModel extends ActorSubscriber {
     override def inFlightInternally: Int = queue.size
   }
 
-  def storeData(data: ProcessedData): Unit
+  def storeData(data: AgentAction): Unit
 
-  def processRequest(request: Request): ProcessedData
+  def processRequest(request: DataRequest): ProcessedData
 
   override def receive: Receive = {
-    case OnNext(data: ProcessedData) =>
+    case OnNext(data: AgentAction) =>
       storeData(data)
-    case request: Request =>
+    case request: DataRequest =>
       sender ! processRequest(request)
     case _ =>
       sender ! "Invalid request"
