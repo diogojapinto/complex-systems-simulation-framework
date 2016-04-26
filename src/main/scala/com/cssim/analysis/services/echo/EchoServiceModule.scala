@@ -25,10 +25,20 @@ import scala.concurrent.duration._
   */
 object EchoServiceModule {
 
+  /**
+    * Request message used to request the last element seen in the stream
+    */
   case object EchoDataRequest extends DataRequest
 
+  /**
+    * Request message to establish a continuous flow of the incoming data
+    */
   case object ContinuousEchoDataRequest extends DataRequest
 
+  /**
+    *
+    * @param data
+    */
   case class EchoData(data: AgentAction) extends ProcessedData
 
   case class EchoSocketSource(source: Source[Message, ActorRef]) extends ProcessedData

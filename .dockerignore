@@ -2,3 +2,4 @@
 target
 dropwizard-render.yml
 data/
+src/main/scala/com/nyctaxi

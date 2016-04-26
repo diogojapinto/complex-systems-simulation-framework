@@ -7,6 +7,11 @@ import com.cssim.lib.AgentAction
 
 import scala.collection.mutable
 
+/**
+  * Companion object for the AnalysisDataModel class
+  *
+  * defines auxiliary classes, to be sub-classed by the analysis services
+  */
 object AnalysisDataModel {
   type AnalysisDataModelProps = Props
 
@@ -14,6 +19,9 @@ object AnalysisDataModel {
   abstract class DataRequest
 }
 
+/**
+  * This class is responsible for receiving the incoming AgentAction data objects
+  */
 abstract class AnalysisDataModel extends ActorSubscriber {
 
   import AnalysisDataModel._
@@ -24,7 +32,7 @@ abstract class AnalysisDataModel extends ActorSubscriber {
   override protected val requestStrategy: RequestStrategy = new MaxInFlightRequestStrategy(max=MaxQueueSize) {
     override def inFlightInternally: Int = queue.size
   }
-
+""
   def storeData(data: AgentAction): Unit
 
   def processRequest(request: DataRequest): ProcessedData

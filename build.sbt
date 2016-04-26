@@ -6,25 +6,39 @@ version := "1.0"
 
 scalaVersion := "2.11.7"
 
+assemblyJarName := "skywatch-cssim.jar"
+mainClass in assembly := Some("com.mog.sim.SkywatchMain")
+
+assemblyMergeStrategy in assembly := {
+  case PathList("netty-buffer", xs @ _*) => MergeStrategy.concat
+  case PathList("netty-common", xs @ _*) => MergeStrategy.concat
+  case x =>
+    val oldStrategy = (assemblyMergeStrategy in assembly).value
+    oldStrategy(x)
+}
+
 lazy val versions = new {
   val scalaReflect = "2.11.7"
   val scalaXml = "1.0.5"
   val akka = "2.4.4"
   val akkaStream = "2.4.4"
-  val logback = "1.0.13"
   val scalaTest = "2.2.3"
   val deeplearning4j = "0.4-rc3.8"
   val canova = "0.0.0.14"
   val play = "2.5.0"
   val tepkin = "0.6"
-  val log4j = "1.2.17"
+  val logback = "1.1.7"
+  val slf4j = "3.4.0"
+  val config = "1.3.0"
 }
 
 libraryDependencies ++= Seq(
   "org.scala-lang.modules" %% "scala-xml" % versions.scalaXml,
   "org.scala-lang" % "scala-reflect" % versions.scalaReflect,
 
-  "log4j" % "log4j" % versions.log4j,
+  "ch.qos.logback" %  "logback-classic" % versions.logback,
+  "com.typesafe.scala-logging" %% "scala-logging" % versions.slf4j,
+  "com.typesafe" % "config" % versions.config,
 
   "com.typesafe.akka" %% "akka-contrib" % versions.akka,
   "com.typesafe.akka" %% "akka-actor" % versions.akka,

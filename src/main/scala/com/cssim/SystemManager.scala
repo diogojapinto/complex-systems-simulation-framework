@@ -49,7 +49,7 @@ class SystemManager(val ingestor: StreamIngestor) extends ServicesProvider {
 
   val serverThread = new Thread {
     override def run: Unit = {
-      server ! Start()
+      server ! Start
     }
   }
 

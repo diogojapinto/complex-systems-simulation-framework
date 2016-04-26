@@ -9,6 +9,7 @@ import akka.util.Timeout
 import com.github.jeroenr.tepkin.MongoClient
 import com.github.jeroenr.bson.BsonDocument
 import com.github.jeroenr.bson.BsonDsl._
+import com.typesafe.config.ConfigFactory
 
 import scala.concurrent.duration._
 
@@ -17,8 +18,11 @@ object SkywatchSource extends StreamSource {
 
   implicit val timeout: Timeout = 24 hours
 
+  // Retrieve the Logging Server IP
+  val conf = ConfigFactory.load()
+
   // Create client for connecting with the database
-  val client = MongoClient("mongodb://192.168.1.131")
+  val client = MongoClient(conf.getString("loggingLocation"))
 
   import client.{context, ec}
 
