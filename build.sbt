@@ -10,11 +10,8 @@ assemblyJarName := "skywatch-cssim.jar"
 mainClass in assembly := Some("com.mog.sim.SkywatchMain")
 
 assemblyMergeStrategy in assembly := {
-  case PathList("netty-buffer", xs @ _*) => MergeStrategy.concat
-  case PathList("netty-common", xs @ _*) => MergeStrategy.concat
-  case x =>
-    val oldStrategy = (assemblyMergeStrategy in assembly).value
-    oldStrategy(x)
+  case "META-INF/io.netty.versions.properties" => MergeStrategy.first
+  case _ => MergeStrategy.first
 }
 
 lazy val versions = new {
@@ -40,13 +37,13 @@ libraryDependencies ++= Seq(
   "com.typesafe.scala-logging" %% "scala-logging" % versions.slf4j,
   "com.typesafe" % "config" % versions.config,
 
-  "com.typesafe.akka" %% "akka-contrib" % versions.akka,
+  //"com.typesafe.akka" %% "akka-contrib" % versions.akka,
   "com.typesafe.akka" %% "akka-actor" % versions.akka,
   "com.typesafe.akka" %% "akka-agent" % versions.akka,
   "com.typesafe.akka" %% "akka-remote" % versions.akka,
   "com.typesafe.akka" %% "akka-slf4j" % versions.akka,
   "com.typesafe.akka" %% "akka-testkit" % versions.akka,
-  "com.typesafe.akka" %% "akka-cluster-tools" % versions.akka,
+  //"com.typesafe.akka" %% "akka-cluster-tools" % versions.akka,
 
   "com.typesafe.akka" %% "akka-stream" % versions.akka,
   "com.typesafe.akka" %% "akka-http-core" % versions.akka,

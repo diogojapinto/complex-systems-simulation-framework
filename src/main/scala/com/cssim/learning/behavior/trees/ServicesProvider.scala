@@ -15,9 +15,9 @@ abstract class ServicesProvider {
   /**
     *
     */
-  private val analysisGraphComponents = mutable.Buffer.empty[(String, AnalysisDataModelProps)]
-  private val analysisApis = mutable.Buffer.empty[AnalysisApi]
-  private val analysisDataModelActors = mutable.Map.empty[String, ActorRef]
+  protected val analysisGraphComponents = mutable.Buffer.empty[(String, AnalysisDataModelProps)]
+  protected val analysisApis = mutable.Buffer.empty[AnalysisApi]
+  implicit val analysisDataModelActors = mutable.Map.empty[String, ActorRef]
 
   def addAnalysisModule(name: String,
                         dataModel: AnalysisDataModelProps,
