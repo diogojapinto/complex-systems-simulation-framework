@@ -55,7 +55,7 @@ public class JavaGravesLSTMCharModellingExample {
         int nCharactersToSample = 300;				//Length of each sample to generate
         String generationInitialization = null;		//Optional character initialization; a random character is used if null
         // Above is Used to 'prime' the LSTM with a character sequence to continue/complete.
-        // Initialization characters must all be in CharacterIterator.getMinimalCharacterSet() by default
+        // Initialization characters must all be in TripIterator.getMinimalCharacterSet() by default
         Random rng = new Random(12345);
 
         //Get a DataSetIterator that handles vectorization of text into something we can use to train
@@ -156,7 +156,7 @@ public class JavaGravesLSTMCharModellingExample {
      * @param initialization String, may be null. If null, select a random character as initialization for all samples
      * @param charactersToSample Number of characters to sample from network (excluding initialization)
      * @param net MultiLayerNetwork with one or more GravesLSTM/RNN layers and a softmax output layer
-     * @param iter CharacterIterator. Used for going from indexes back to characters
+     * @param iter TripIterator. Used for going from indexes back to characters
      */
     private static String[] sampleCharactersFromNetwork( String initialization, MultiLayerNetwork net,
                                                          CharacterIterator iter, Random rng, int charactersToSample, int numSamples ){

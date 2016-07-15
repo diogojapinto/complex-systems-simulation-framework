@@ -34,7 +34,7 @@ abstract class AgentAction {
   val sourceId: String
 
   /**
-    *   unique identifier of the action's source
+    *   unique identifier of the action's target
     */
   val targetId: String
   val attributes: mutable.Map[String, DataType]

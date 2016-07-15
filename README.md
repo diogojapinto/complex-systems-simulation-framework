@@ -1,4 +1,4 @@
-# Complex Systems' Simulation Framework
+# Complex Systems' Analysis and Simulation Framework
 
 ## Synopsis
 

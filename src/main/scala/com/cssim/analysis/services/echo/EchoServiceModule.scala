@@ -3,10 +3,9 @@ package com.cssim.analysis.services.echo
 import akka.actor.{ActorRef, Props}
 import akka.http.scaladsl.model.ws.Message
 import akka.stream.scaladsl.Source
-import com.cssim.SystemManager
-import com.cssim.analysis.AnalysisDataModel.{ProcessedData, DataRequest}
+import com.cssim.{ServicesProvider, SystemManager}
+import com.cssim.analysis.AnalysisDataModel.{DataRequest, ProcessedData}
 import com.cssim.analysis._
-import com.cssim.learning.behavior.trees.ServicesProvider
 import com.cssim.lib.AgentAction
 
 /**
@@ -65,7 +64,6 @@ trait EchoServiceModule extends ServicesProvider {
       broadcastProcessedData(lastValue)
     }
 
-
     override def processRequest(request: DataRequest): ProcessedData = request match {
       case EchoDataRequest => lastValue
       case ContinuousEchoDataRequest =>
@@ -94,7 +92,6 @@ trait EchoServiceModule extends ServicesProvider {
 
   val dataModel = Props(new EchoDataModel)
   val api = EchoApi
-
 
   addAnalysisModule(moduleName, dataModel, api)
 }

@@ -1,8 +1,8 @@
-package com.cssim.learning.behavior.trees
+package com.cssim
 
 import akka.actor.ActorRef
-import com.cssim.analysis.AnalysisDataModel.AnalysisDataModelProps
 import com.cssim.analysis.AnalysisApi
+import com.cssim.analysis.AnalysisDataModel.AnalysisDataModelProps
 
 import scala.collection.mutable
 

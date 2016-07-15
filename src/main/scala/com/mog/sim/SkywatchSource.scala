@@ -13,7 +13,6 @@ import com.typesafe.config.ConfigFactory
 
 import scala.concurrent.duration._
 
-
 object SkywatchSource extends StreamSource {
 
   implicit val timeout: Timeout = 24 hours

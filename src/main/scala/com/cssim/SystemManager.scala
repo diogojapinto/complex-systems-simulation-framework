@@ -1,11 +1,10 @@
 package com.cssim
 
 import akka.actor.{ActorSystem, Props}
-import akka.stream.scaladsl.{Broadcast, Flow, GraphDSL, RunnableGraph, Sink}
+import akka.stream.scaladsl.{Broadcast, GraphDSL, RunnableGraph, Sink}
 import akka.stream.{ActorMaterializer, ClosedShape}
-import com.cssim.learning.behavior.trees.ServicesProvider
-import com.cssim.lib.AgentAction
 import com.cssim.analysis._
+import com.cssim.lib.AgentAction
 import com.cssim.stream.StreamIngestor
 
 

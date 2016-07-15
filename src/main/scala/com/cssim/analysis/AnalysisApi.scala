@@ -9,6 +9,7 @@ import akka.util.Timeout
 import com.cssim.analysis.AnalysisDataModel.{DataRequest, ProcessedData}
 import sun.reflect.generics.reflectiveObjects.NotImplementedException
 import akka.pattern.ask
+import com.cssim.analysis.services.echo.EchoServiceModule
 
 import scala.collection.mutable
 import scala.concurrent.Await
